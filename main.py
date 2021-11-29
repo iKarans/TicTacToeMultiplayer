@@ -4,12 +4,12 @@ import numpy as np
 
 pygame.init()
 
-WIDTH = 650
-HEIGHT = 650
+WIDTH = 600
+HEIGHT = 600
 
 BG_COLOR = (42, 157, 143)
 LINE_COLOR = (38, 70, 83)
-LINE_WIDTH = 15
+LINE_WIDTH = 10
 X_COLOR = (233, 196, 106)
 Y_COLOR = (244, 162, 97)
 
@@ -24,10 +24,10 @@ screen.fill(BG_COLOR)
 board = np.zeros((3, 3))
 
 #Lines
-pygame.draw.line(screen, LINE_COLOR, (10, 210), (640, 210), LINE_WIDTH)
-pygame.draw.line(screen, LINE_COLOR, (10, 425), (640, 425), LINE_WIDTH)
-pygame.draw.line(screen, LINE_COLOR, (210, 10), (210, 640), LINE_WIDTH)
-pygame.draw.line(screen, LINE_COLOR, (425, 10), (425, 640), LINE_WIDTH)
+pygame.draw.line(screen, LINE_COLOR, (0, 200), (600, 200), LINE_WIDTH)
+pygame.draw.line(screen, LINE_COLOR, (0, 400), (600, 400), LINE_WIDTH)
+pygame.draw.line(screen, LINE_COLOR, (200, 0), (200, 600), LINE_WIDTH)
+pygame.draw.line(screen, LINE_COLOR, (400, 0), (400, 600), LINE_WIDTH)
 
 # player
 player = 1
