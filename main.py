@@ -54,6 +54,27 @@ def is_board_full():
                 return False
     return True
 
+def check_if_won(self):
+    for row in range(3):
+        if self.board[row][0] == self.board[row][1] == self.board[row][2] != " ":
+            self.winner = self.board[row][0]
+            self.game_over = True
+            return True
+    for col in range(3):
+        if self.board[0][col] == self.board[1][col] == self.board[2][col] != " ":
+            self.winner = self.board[0][col]
+            self.game_over = True
+            return True
+    if self.board[0][0] == self.board[1][1] == self.board[2][2] != " ":
+        self.winner = self.board[0][0]
+        self.game_over = True
+        return True
+    if self.board[0][2] == self.board[1][1] == self.board[2][0] != " ":
+        self.winner = self.board[0][0]
+        self.game_over = True
+        return True
+    return False
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
