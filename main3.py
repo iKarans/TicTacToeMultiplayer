@@ -98,4 +98,4 @@ class TicTacToe:
 
 
 ticTacToe = TicTacToe()
-ticTacToe.host_game("localhost", 9090)
+ticTacToe.connect_to_game("localhost", 9090)
