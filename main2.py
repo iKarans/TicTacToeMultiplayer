@@ -4,6 +4,10 @@ import numpy as np
 import threading
 import socket
 
+HOST = "localhost"
+PORT = 9090
+FORMAT = "utf-8"
+
 WIDTH = 600
 HEIGHT = 600
 
@@ -17,9 +21,11 @@ CIRCLE_RADIUS = 60
 CIRCLE_WIDTH = 15
 
 class TicTacToe:
-    def __init__(self):
+    def __init__(self, host, port):
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect((host, port))
         self.board = np.zeros((3, 3))
-        self.turn = "X"
+        self.turn = 1
         self.you = "X"
         self.opponent = "O"
         self.winner = None
@@ -30,28 +36,34 @@ class TicTacToe:
         self.setup_pygame()
         self.run_pygame()
 
-    def host_game(self, host, port):
-        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        server.bind((host, port))
-        server.listen(1)
+    def handle_multiplayer(self, event):
+        while True:
+            if self.turn == 1:
+                if self.is_valid_square(int(event.pos[1] // 200), int(event.pos[0] // 200)):
+                    self.mark_square(int(event.pos[1] // 200), int(event.pos[0] // 200), self.turn)
+                    self.turn = 2
+                    self.sock.send(f"{int(event.pos[1] // 200)},{int(event.pos[0] // 200)}".encode(FORMAT))
+                    print(1)
+                    print(self.board)
+            else:
+                move = self.sock.recv(1024).decode(FORMAT)
+                movex = int(move.split(",")[0])
+                movey = int(move.split(",")[1])
+                self.mark_square(movex, movey, self.turn)
+                self.turn = 1
+                print(2)
+                print(self.board)
 
-        client, addr = server.accept()
-
-        self.you = "X"
-        self.opponent = "O"
-        server.close()
-
-    def connect_to_game(self, host, port):
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.connect((host, port))
-        self.you = "O"
-        self.opponent = "X"
 
     def run_pygame(self):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN and not self.game_over:
+                    thread = threading.Thread(target=self.handle_multiplayer, args=(event,))
+                    thread.start()
+                self.draw_shape()
             pygame.display.update()
 
     def setup_pygame(self):
@@ -65,13 +77,16 @@ class TicTacToe:
     def draw_shape(self):
         for row in range(3):
             for col in range(3):
-                if self.board[row][col] == 2:
+                if self.board[row][col] == 1:
                     pygame.draw.circle(self.screen, Y_COLOR, (col * 200 + 100, row * 200 + 100), CIRCLE_RADIUS, CIRCLE_WIDTH)
-                elif self.board[row][col] == 1:
+                elif self.board[row][col] == 2:
                     pygame.draw.circle(self.screen, X_COLOR, (col * 200 + 100, row * 200 + 100), CIRCLE_RADIUS, CIRCLE_WIDTH)
 
     def is_valid_square(self, row, col):
         return self.board[row][col] == 0
+
+    def mark_square(self, row, col, player):
+        self.board[row][col] = player
 
     def check_if_won(self):
         for row in range(3):
@@ -97,5 +112,4 @@ class TicTacToe:
 
 
 
-ticTacToe = TicTacToe()
-ticTacToe.host_game("localhost", 9090)
+ticTacToe = TicTacToe(HOST, PORT)
