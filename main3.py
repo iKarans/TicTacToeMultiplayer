@@ -52,6 +52,8 @@ class TicTacToe:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    print("hi")
             pygame.display.update()
 
     def setup_pygame(self):
