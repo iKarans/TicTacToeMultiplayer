@@ -1,7 +1,7 @@
 import socket
 import threading
 
-HOST = "localhost"
+HOST = socket.gethostbyname(socket.gethostname())
 PORT = 9090
 FORMAT = "utf-8"
 
