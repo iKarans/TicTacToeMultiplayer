@@ -1,6 +1,6 @@
 # TicTacToeMultiplayer
 
-![TicTacToe Multiplayer](https://github.com/iKarans/TicTacToeMultiplayer/blob/main/TicTacToeMultiplayer.png)
+![TicTacToe Multiplayer](https://github.com/iKarans/TicTacToeMultiplayer/blob/master/TicTacToeMultiplayer.png)
 
 ## Introduction
 
