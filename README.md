@@ -12,5 +12,5 @@ The game functions like a your usual Tic-Tac-Toe game. Player one will be a blue
 
 - [ ] Add score count.
 - [ ] Winning line doesn't show on the other players client.
-- [ ] if a player leaves find a way to save his current moves for when he rejoins
-- [ ] only allow reset if both players agree
+- [ ] If a player leaves find a way to save his current moves for when he rejoins
+- [ ] Only allow reset if both players agree
