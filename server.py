@@ -3,19 +3,20 @@ import threading
 
 HOST = "localhost"
 PORT = 9090
+FORMAT = "utf-8"
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
 
-server.listen()
+server.listen(2)
 
 clients = []
 
 def broadcast(move, client):
+    print(move.decode(FORMAT))
     for cli in clients:
         if cli != client:
             cli.send(move)
-    print(len(clients))
 
 def handle(client):
     while True:

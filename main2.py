@@ -32,28 +32,24 @@ class TicTacToe:
         self.game_over = False
         self.counter = 0
 
+        multiplayer_thread = threading.Thread(target=self.handle_multiplayer)
+        multiplayer_thread.start()
+
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.setup_pygame()
         self.run_pygame()
 
-    def handle_multiplayer(self, event):
-        while True:
-            if self.turn == 1:
-                if self.is_valid_square(int(event.pos[1] // 200), int(event.pos[0] // 200)):
-                    self.mark_square(int(event.pos[1] // 200), int(event.pos[0] // 200), self.turn)
-                    self.turn = 2
-                    self.sock.send(f"{int(event.pos[1] // 200)},{int(event.pos[0] // 200)}".encode(FORMAT))
-                    print(1)
-                    print(self.board)
-            else:
-                move = self.sock.recv(1024).decode(FORMAT)
-                movex = int(move.split(",")[0])
-                movey = int(move.split(",")[1])
-                self.mark_square(movex, movey, self.turn)
-                self.turn = 1
-                print(2)
-                print(self.board)
 
+    def handle_multiplayer(self):
+        while True:
+            print("hi")
+            move = self.sock.recv(1024).decode(FORMAT)
+            print(move)
+            movex = int(move.split(",")[0])
+            movey = int(move.split(",")[1])
+            self.mark_square(movex, movey, self.turn)
+            self.turn = 1
+            self.draw_shape()
 
     def run_pygame(self):
         while True:
@@ -61,9 +57,14 @@ class TicTacToe:
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.game_over:
-                    thread = threading.Thread(target=self.handle_multiplayer, args=(event,))
-                    thread.start()
-                self.draw_shape()
+                    if self.turn == 1:
+                        if self.is_valid_square(int(event.pos[1] // 200), int(event.pos[0] // 200)):
+                            self.mark_square(int(event.pos[1] // 200), int(event.pos[0] // 200), self.turn)
+                            self.turn = 2
+                            self.sock.send(f"{int(event.pos[1] // 200)},{int(event.pos[0] // 200)}".encode(FORMAT))
+                            print(1)
+                            print(self.board)
+                            self.draw_shape()
             pygame.display.update()
 
     def setup_pygame(self):
