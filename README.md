@@ -14,3 +14,4 @@ The game functions like a your usual Tic-Tac-Toe game. Player one will be a blue
 - [ ] Winning line doesn't show on the other players client.
 - [ ] If a player leaves find a way to save his current moves for when he rejoins
 - [ ] Only allow reset if both players agree
+- [ ] Add something to close the game by closing server and pygame
